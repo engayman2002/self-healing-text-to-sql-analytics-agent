@@ -104,8 +104,6 @@ yarn-error.log*
 *.db-journal
 *.db-wal
 *.db-shm
-demo_ecommerce.db
-backend/demo_ecommerce.db
 
 # Docker volumes mapped to host
 postgres_data/
