@@ -1,0 +1,155 @@
+# ==============================================================================
+# Self-Healing Text-to-SQL Analytics Agent - Root .gitignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment Variables & Secrets (CRITICAL: NEVER COMMIT REAL KEYS)
+# ------------------------------------------------------------------------------
+.env
+.env.*
+*.env
+*.env.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env.local
+frontend/.env*.local
+
+# Allow example templates to be committed
+!.env.example
+!**/.env.example
+
+# ------------------------------------------------------------------------------
+# 2. Python Virtual Environments & Packages
+# ------------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+.env/
+env.bak/
+venv.bak/
+
+# Python byte-code and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Pytest & Code Quality Caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+
+# ------------------------------------------------------------------------------
+# 3. Node.js & Next.js Build Artifacts
+# ------------------------------------------------------------------------------
+node_modules/
+frontend/node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+frontend/.next/
+out/
+frontend/out/
+
+# TypeScript cache
+*.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
+next-env.d.ts
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ------------------------------------------------------------------------------
+# 4. Database Files & Local Storage
+# ------------------------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.db-journal
+*.db-wal
+*.db-shm
+demo_ecommerce.db
+backend/demo_ecommerce.db
+
+# Docker volumes mapped to host
+postgres_data/
+backend_data/
+
+# ------------------------------------------------------------------------------
+# 5. Operating System & Editor Files
+# ------------------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Linux
+*~
+
+# IDEs
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+
+# ------------------------------------------------------------------------------
+# 6. Miscellaneous & Scratch Files
+# ------------------------------------------------------------------------------
+*.log
+logs/
+scratch/
+tmp/
+temp/

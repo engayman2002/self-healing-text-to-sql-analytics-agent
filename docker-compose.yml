@@ -1,0 +1,76 @@
+services:
+  postgres-demo:
+    image: postgres:16-alpine
+    container_name: self-healing-postgres-demo
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: demo_analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d demo_analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - analytics-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: self-healing-backend
+    restart: unless-stopped
+    depends_on:
+      postgres-demo:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - APP_SECRET_KEY=${APP_SECRET_KEY:-k8o9_demo_app_secret_32bytes_change_in_prod!}
+      - AUTO_SEED_DEMO=true
+      - DEMO_DB_FILENAME=demo_ecommerce.db
+      - LOG_LEVEL=INFO
+    volumes:
+      - backend_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - analytics-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    container_name: self-healing-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+      - NODE_ENV=production
+    networks:
+      - analytics-net
+
+volumes:
+  postgres_data:
+  backend_data:
+
+networks:
+  analytics-net:
+    driver: bridge
